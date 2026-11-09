@@ -1,0 +1,7 @@
+quantity,this_project,scipy,published_mcneil_1997
+Exceedances over 10m,109.0,,109.0
+xi (tail index),0.49698577410020717,0.49697630118112623,0.497
+beta (scale),6.975468259426169,6.9754506314014675,6.98
+SE of xi,0.1362830371169723,,
+LR test xi = 0 (exponential): statistic,44.798176794226606,,
+LR test p-value,2.1842598329279418e-11,,

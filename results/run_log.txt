@@ -1,0 +1,35 @@
+Losses: 2167 over 11 years; exceedances over 10m: 109
+
+Severity
+                               quantity  this_project  scipy  published_mcneil_1997
+                   Exceedances over 10m      109.0000    NaN                109.000
+                        xi (tail index)        0.4970 0.4970                  0.497
+                           beta (scale)        6.9755 6.9755                  6.980
+                               SE of xi        0.1363    NaN                    NaN
+LR test xi = 0 (exponential): statistic       44.7982    NaN                    NaN
+                        LR test p-value        0.0000    NaN                    NaN
+
+Frequency
+ mean  variance  dispersion
+9.909     8.291       0.837
+
+Layers
+     layer  burning_cost  model_expected_loss_analytic  model_expected_loss_mc  mc_se  expected_loss_xi_minus_1se  expected_loss_xi_plus_1se  losses_in_history  prob_any_loss  var_99_5  technical_premium  rate_on_line  payback_years
+  10 xs 10        58.898                        57.693                  57.684  0.022                      56.468                     58.821                109          1.000   121.741             71.211         7.121          0.140
+  30 xs 20        40.664                        44.607                  44.590  0.031                      36.829                     52.078                 36          0.965   146.789             60.900         2.030          0.493
+  50 xs 50        16.310                        17.020                  17.017  0.026                       9.805                     25.348                  7          0.482   115.321             29.830         0.597          1.676
+150 xs 100        22.461                        10.763                  10.767  0.034                       3.932                     21.399                  3          0.162   155.820             28.080         0.187          5.342
+
+Reinstatements 30 xs 20
+ unlimited_free_cover_expected_loss  reinstatements  rate  pure_premium  expected_recoveries  expected_reinstatement_premium  check_net_zero
+                            44.5904               0   1.0       24.3167              24.3167                          0.0000             0.0
+                            44.5904               1   1.0       20.7964              37.6531                         16.8567            -0.0
+                            44.5904               2   1.0       18.9559              42.7475                         23.7916            -0.0
+                            44.5904               2   0.5       26.2649              42.7475                         16.4826            -0.0
+
+Exposure rating (illustrative)
+ curve_c                        label  expected_loss_30xs20  total_loss_probability
+       2                  Swiss Re Y2                 6.968                   0.130
+       3                  Swiss Re Y3                 5.353                   0.033
+       4                  Swiss Re Y4                 3.773                   0.006
+       5 Lloyd's industrial (approx.)                 2.443                   0.001
