@@ -38,7 +38,7 @@ All amounts are in DKK million.
 - **GPD fit:** the maximum likelihood fit reproduces the published estimates of McNeil (1997, *ASTIN Bulletin*) and agrees with scipy to five decimals.
 - **Closed form vs simulation:** for every layer, the closed-form expected loss and the one-million-year simulation agree within 0.6 Monte Carlo standard errors. At 200,000 simulated years, the top layer showed a gap of 2.8 standard errors. Tests on five other seeds gave gaps between 0.0 and 2.1, which identified it as simulation noise in a very heavy-tailed layer, so the simulation was increased to one million years.
 - **Reinstatement pricing:** for every structure, expected premium plus expected reinstatement premiums equals expected recoveries exactly.
-- **Exposure curves:** G(0) = 0 and G(1) = 1 hold for every MBBEFD curve.
+- **Exposure curves:** the parameterisation b(c), g(c) and the curve G(x) follow Bernegger (1997), as implemented in the CRAN package `MBBEFDLite`. Beyond G(0) = 0 and G(1) = 1 (which any parameters satisfy), two non-trivial properties are checked for c = 1.5 to 5: the slope at the origin equals the inverse of the mean loss degree, 1/G'(0) = ln(gb)(1-b)/(ln(b)(1-gb)), and G'(1)/G'(0) equals the total-loss probability 1/g. Both hold to six decimals.
 
 ## Severity: extreme value theory
 

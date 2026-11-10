@@ -30,3 +30,18 @@ def exposure_rate(profile, attach, limit, c, loss_ratio):
     si = profile["sum_insured"].values
     share = exposure_curve((attach + limit) / si, c) - exposure_curve(attach / si, c)
     return float((profile["premium"].values * loss_ratio * share).sum())
+
+
+def check_curve(c, h=1e-7):
+    """Non-trivial consistency checks of the MBBEFD exposure curve (Bernegger, 1997).
+
+    G'(0) = 1 / mu, with mu = ln(gb)(1 - b) / (ln(b)(1 - gb)) the mean loss degree, and
+    G'(1) / G'(0) = p = 1 / g, the probability of a total loss.
+    """
+    b, g = mbbefd_params(c)
+    d0 = (exposure_curve(h, c) - exposure_curve(0.0, c)) / h
+    d1 = (exposure_curve(1.0, c) - exposure_curve(1.0 - h, c)) / h
+    mu = np.log(g * b) * (1 - b) / (np.log(b) * (1 - g * b))
+    return {"curve_c": c, "G(0)": float(exposure_curve(0.0, c)), "G(1)": float(exposure_curve(1.0, c)),
+            "1/G'(0)": 1 / d0, "mean_loss_degree_formula": mu,
+            "G'(1)/G'(0)": d1 / d0, "total_loss_prob_1_over_g": 1 / g}

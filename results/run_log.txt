@@ -33,3 +33,11 @@ Exposure rating (illustrative)
        3                  Swiss Re Y3                 5.353                   0.033
        4                  Swiss Re Y4                 3.773                   0.006
        5 Lloyd's industrial (approx.)                 2.443                   0.001
+
+Exposure curve checks
+ curve_c  G(0)  G(1)  1/G'(0)  mean_loss_degree_formula  G'(1)/G'(0)  total_loss_prob_1_over_g
+     1.5  -0.0   1.0 0.348548                  0.348548     0.236928                  0.236928
+     2.0  -0.0   1.0 0.226091                  0.226091     0.130029                  0.130029
+     3.0   0.0   1.0 0.087180                  0.087180     0.032713                  0.032712
+     4.0   0.0   1.0 0.031852                  0.031852     0.006474                  0.006474
+     5.0  -0.0   1.0 0.012146                  0.012146     0.001008                  0.001008

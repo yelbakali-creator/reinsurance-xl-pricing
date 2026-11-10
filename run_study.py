@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import chi2, genpareto
 
-from src.exposure_rating import exposure_curve, exposure_rate
+from src.exposure_rating import check_curve, exposure_curve, exposure_rate
 from src.pricing import (burning_cost, fit_frequency, reinstatement_pricing,
                          simulate_annual_layer_losses, technical_premium)
 from src.severity import (fit_gpd, gpd_layer_expected, gpd_quantile, gpd_survival, hill, mean_excess)
@@ -94,6 +94,8 @@ def main():
                                             (5, "Lloyd's industrial (approx.)")]])
     exposure.to_csv(TABLES / "exposure_rating_illustrative.csv", index=False)
     profile.to_csv(TABLES / "illustrative_risk_profile.csv", index=False)
+    curve_checks = pd.DataFrame([check_curve(c) for c in (1.5, 2, 3, 4, 5)])
+    curve_checks.to_csv(TABLES / "exposure_curve_checks.csv", index=False)
 
     # 6. Charts
     fig, axes = plt.subplots(1, 2, figsize=(11, 3.8))
@@ -167,6 +169,7 @@ def main():
     print("\nLayers\n" + layers[cols].round(3).to_string(index=False))
     print("\nReinstatements 30 xs 20\n" + reinst.round(4).to_string(index=False))
     print("\nExposure rating (illustrative)\n" + exposure.round(3).to_string(index=False))
+    print("\nExposure curve checks\n" + curve_checks.round(6).to_string(index=False))
 
 
 if __name__ == "__main__":
