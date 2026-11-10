@@ -1,5 +1,7 @@
 # Per-Risk Excess-of-Loss Reinsurance Pricing with Extreme Value Theory
 
+[![tests](https://github.com/yelbakali-creator/reinsurance-xl-pricing/actions/workflows/tests.yml/badge.svg)](https://github.com/yelbakali-creator/reinsurance-xl-pricing/actions/workflows/tests.yml)
+
 A from-scratch Python pricing engine for property per-risk excess-of-loss (XL) treaties, applied to the classic Danish fire large-loss data (2,167 losses above DKK 1m, 1980-1990, inflation-adjusted to 1985):
 
 1. **Severity**: extreme value theory, with a Generalized Pareto (GPD) tail above DKK 10m, threshold selection, a Hill estimator and goodness-of-fit diagnostics.
@@ -38,7 +40,7 @@ All amounts are in DKK million.
 - **GPD fit:** the maximum likelihood fit reproduces the published estimates of McNeil (1997, *ASTIN Bulletin*) and agrees with scipy to five decimals.
 - **Closed form vs simulation:** for every layer, the closed-form expected loss and the one-million-year simulation agree within 0.6 Monte Carlo standard errors. At 200,000 simulated years, the top layer showed a gap of 2.8 standard errors. Tests on five other seeds gave gaps between 0.0 and 2.1, which identified it as simulation noise in a very heavy-tailed layer, so the simulation was increased to one million years.
 - **Reinstatement pricing:** for every structure, expected premium plus expected reinstatement premiums equals expected recoveries exactly.
-- **Exposure curves:** the parameterisation b(c), g(c) and the curve G(x) follow Bernegger (1997), as implemented in the CRAN package `MBBEFDLite`. Beyond G(0) = 0 and G(1) = 1 (which any parameters satisfy), two non-trivial properties are checked for c = 1.5 to 5: the slope at the origin equals the inverse of the mean loss degree, 1/G'(0) = ln(gb)(1-b)/(ln(b)(1-gb)), and G'(1)/G'(0) equals the total-loss probability 1/g. Both hold to six decimals.
+- **Exposure curves:** the parameterisation b(c), g(c) and the curve G(x) follow Bernegger (1997), as implemented in the CRAN package `MBBEFDLite`. Beyond G(0) = 0 and G(1) = 1 (which any parameters satisfy), two non-trivial properties are checked for c = 1.5 to 5, using the exact derivative of G: the slope at the origin equals the inverse of the mean loss degree, 1/G'(0) = ln(gb)(1-b)/(ln(b)(1-gb)), and G'(1)/G'(0) equals the total-loss probability 1/g. Both hold to machine precision (1e-13). A first version used one-sided finite differences, whose error (about 1e-5 for the steepest curve) was too large for a strict automated test; the exact derivative, itself checked against a central difference to 1e-10, replaced it.
 
 ## Severity: extreme value theory
 
@@ -113,6 +115,7 @@ Exposure rating prices a layer from the cedant's risk profile (sums insured and 
 
 ```bash
 pip install -r requirements.txt
+python -m pytest       # 4 automated validation tests
 python run_study.py
 ```
 

@@ -22,6 +22,15 @@ def exposure_curve(x, c):
     return np.log(((g - 1) * b + (1 - g * b) * b ** x) / (1 - b)) / np.log(g * b)
 
 
+def exposure_curve_derivative(x, c):
+    """Exact derivative of the MBBEFD exposure curve:
+    G'(x) = ln(b) (1 - g b) b**x / (ln(g b) ((g - 1) b + (1 - g b) b**x))."""
+    b, g = mbbefd_params(c)
+    x = np.asarray(x, dtype=float)
+    bx = b ** x
+    return np.log(b) * (1 - g * b) * bx / (np.log(g * b) * ((g - 1) * b + (1 - g * b) * bx))
+
+
 def exposure_rate(profile, attach, limit, c, loss_ratio):
     """Expected layer loss for a risk profile (bands of sum insured and premium).
 
@@ -32,16 +41,19 @@ def exposure_rate(profile, attach, limit, c, loss_ratio):
     return float((profile["premium"].values * loss_ratio * share).sum())
 
 
-def check_curve(c, h=1e-7):
+def check_curve(c, h=1e-5):
     """Non-trivial consistency checks of the MBBEFD exposure curve (Bernegger, 1997).
 
-    G'(0) = 1 / mu, with mu = ln(gb)(1 - b) / (ln(b)(1 - gb)) the mean loss degree, and
-    G'(1) / G'(0) = p = 1 / g, the probability of a total loss.
+    Using the exact derivative of G:
+      G'(0) = 1 / mu, with mu = ln(gb)(1 - b) / (ln(b)(1 - gb)) the mean loss degree, and
+      G'(1) / G'(0) = p = 1 / g, the probability of a total loss.
+    The exact derivative is itself cross-checked against a central finite difference.
     """
     b, g = mbbefd_params(c)
-    d0 = (exposure_curve(h, c) - exposure_curve(0.0, c)) / h
-    d1 = (exposure_curve(1.0, c) - exposure_curve(1.0 - h, c)) / h
+    d0, d1 = float(exposure_curve_derivative(0.0, c)), float(exposure_curve_derivative(1.0, c))
+    fd_mid = float((exposure_curve(0.5 + h, c) - exposure_curve(0.5 - h, c)) / (2 * h))
     mu = np.log(g * b) * (1 - b) / (np.log(b) * (1 - g * b))
     return {"curve_c": c, "G(0)": float(exposure_curve(0.0, c)), "G(1)": float(exposure_curve(1.0, c)),
             "1/G'(0)": 1 / d0, "mean_loss_degree_formula": mu,
-            "G'(1)/G'(0)": d1 / d0, "total_loss_prob_1_over_g": 1 / g}
+            "G'(1)/G'(0)": d1 / d0, "total_loss_prob_1_over_g": 1 / g,
+            "derivative_vs_finite_difference_at_0.5": float(exposure_curve_derivative(0.5, c)) / fd_mid - 1}
